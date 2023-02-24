@@ -1,0 +1,42 @@
+<div class="container">
+  <form [formGroup]="formGroup">
+    <mat-form-field class="input-form-field" appearance="outline">
+      <mat-label>Text to QR-code</mat-label>
+      <input type="text" matInput formControlName="qrInput">
+      <mat-icon
+          class="clear-button"
+          *ngIf="qrInput.value.length"
+          matSuffix
+          (click)="clear()"
+      >close</mat-icon>
+    </mat-form-field>
+
+    <h2 class="label">Error correction level <span class="tooltip-info" [matTooltip]="correctionLevelInfo" matTooltipClass="tooltip" [matTooltipPosition]="'after'"> (?) </span></h2>
+    <mat-button-toggle-group
+        class="correctionLevelGroup"
+        formControlName="errorCorrectionLevel"
+        [value]="formGroup"
+    >
+      <mat-button-toggle value="L">L</mat-button-toggle>
+      <mat-button-toggle value="M">M (Default)</mat-button-toggle>
+      <mat-button-toggle value="Q">Q</mat-button-toggle>
+      <mat-button-toggle value="H">H</mat-button-toggle>
+    </mat-button-toggle-group>
+
+  <qrcode
+    #qrcode
+    [cssClass]="'qrcode'"
+    [qrdata]="qrInput.value"
+    [width]="240"
+    [errorCorrectionLevel]="errorCorrectionLevel.value"
+    [allowEmptyString]="true"
+  ></qrcode>
+
+  <button
+      class="img-download-btn"
+      mat-raised-button
+      color="primary"
+      (click)="downloadQRCode(qrcode)"
+  >Download QR Code Image</button>
+  </form>
+</div>
